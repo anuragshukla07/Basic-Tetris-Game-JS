@@ -1,9 +1,12 @@
 document.addEventListener('DOMContentLoaded', ()=>{
 const grid = document.querySelector('.grid')
 let squares = Array.from(document.querySelectorAll('.grid div'))
-const Scoredisplay = document.querySelector('#score')
-const StartBtn = document.querySelector('#start-button')
+const scoredisplay = document.querySelector('#score')
+const startBtn = document.querySelector('#start-button')
 const width = 10;
+let nextRandom = 0;
+let timerId
+
 
 console.log(squares)
 
@@ -62,7 +65,7 @@ const lTetromino = [
     })
   }
 
-timerId = setInterval(moveDown, 1000)
+// timerId = setInterval(moveDown, 1000)
 
 function control(e) {
   if(e.keyCode === 37) {
@@ -88,10 +91,12 @@ function moveDown()
 function freeze() {
   if(current.some(index => squares[currentPosition + index + width].classList.contains('taken'))){
     current.forEach(index => squares[currentPosition + index].classList.add('taken'))
-    random = Math.floor(Math.random()*theTetrominoes.length)
+    random = nextRandom
+    nextRandom = Math.floor(Math.random()*theTetrominoes.length)
     current = theTetrominoes[random][currentRotation]
     currentPosition = 4
     draw()   
+    displayShape()
   }
 
 }
@@ -137,8 +142,7 @@ function freeze() {
 
  const displaySquares = document.querySelectorAll('.mini-grid div')
   const displayWidth = 4
-  const displayIndex = 0
-
+  let displayIndex = 0
 
   
   const upNextTetrominoes = [
@@ -148,6 +152,29 @@ function freeze() {
     [0, 1, displayWidth, displayWidth+1], 
     [1, displayWidth+1, displayWidth*2+1, displayWidth*3+1] 
   ]
+
+function displayShape(){
+  displaySquares.forEach(square =>{
+    square.classList.remove('tetromino')
+  })
+  upNextTetrominoes[nextRandom].forEach( index => {
+    displaySquares[displayIndex + index].classList.add('tetromino')
+  })
+
+}
+
+  startBtn.addEventListener('click',() =>{
+    if (timerId){
+      clearInterval(timerId)
+      timerId = null
+    } else {
+      draw()
+      timerId = setInterval(moveDown,1000)
+      nextRandom = Math.floor(Math.random()*theTetrominoes.length)
+      displayShape()
+    }
+  })
+
 
 
 
