@@ -99,6 +99,7 @@ function freeze() {
     draw()   
     displayShape()
     addScore()
+    gameOver()
   }
 
 }
@@ -195,6 +196,12 @@ function displayShape(){
     }
   }
 
+  function gameOver() {
+    if(current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+      scoredisplay.innerHTML = 'end'
+      clearInterval(timerId)
+    }
+  }
 
 
 
