@@ -7,6 +7,8 @@ const width = 10;
 let nextRandom = 0;
 let timerId
 let score = 0
+const colours = [
+  'orange', 'red' ,'purple' , 'green' ,'blue']
 
 
 console.log(squares)
@@ -56,6 +58,7 @@ const lTetromino = [
   function draw(){
     current.forEach(index =>{
       squares[currentPosition + index].classList.add('tetromino')
+      squares[currentPosition + index].style.backgroundColor = colours[random]
     })
   }
  
@@ -63,6 +66,7 @@ const lTetromino = [
   function undraw(){
     current.forEach(index =>{
       squares[currentPosition + index].classList.remove('tetromino')
+      squares[currentPosition + index].style.backgroundColor = ''
     })
   }
 
@@ -145,7 +149,7 @@ function freeze() {
 
  const displaySquares = document.querySelectorAll('.mini-grid div')
   const displayWidth = 4
-  let displayIndex = 0
+  const displayIndex = 0
 
   
   const upNextTetrominoes = [
@@ -159,9 +163,11 @@ function freeze() {
 function displayShape(){
   displaySquares.forEach(square =>{
     square.classList.remove('tetromino')
+    square.style.backgroundColor = ''
   })
   upNextTetrominoes[nextRandom].forEach( index => {
     displaySquares[displayIndex + index].classList.add('tetromino')
+    displaySquares[displayIndex + index].style.backgroundColor = colours[nextRandom]
   })
 
 }
@@ -188,6 +194,7 @@ function displayShape(){
         row.forEach(index => {
           squares[index].classList.remove('taken')
           squares[index].classList.remove('tetromino')
+          squares[index].style.backgroundColor = ''
         })
         const squareRemoved = squares.splice(i,width)
         squares = squareRemoved.concat(squares)
